@@ -1,0 +1,42 @@
+Librería de comunicaciones.
+
+Cómo usarla:
+En la raíz de tu proyecto debes tener un archivo llamado `connections.properties` con el siguiente contenido
+"""
+server_port=<puerto_del_servidor>
+peers=<lista_de_peers>
+"""
+donde:
+<puerto_del_servidor> es el puerto que la aplicación va a escuchar para nuevas conexiones. Ejemplo: 1234
+<lista_de_peers> es una lista de ip separadas por comas de las cuales la aplicación intentará conectarse. Ejemplo: 111.111.111.111,222.222.222.222
+
+Debes instanciar un objeto de la clase `ConnectionController`.
+
+Una vez instanciado debes llamar su método
+void initialize()
+En este momento ConnectionController se pondrá en marcha.
+
+En este momento es posible mandar mensajes (instancias de Objects) a la red mediante el uso de los métodos:
+void sendFlood(Object mensaje): mandará un mensaje global a toda la red
+y
+void sendPrivate(String ip, Object mensaje): mandará un mensaje a una única ip 
+
+Antes de cerrar la aplicación se debe llamar al método
+void sendDisconnectionAdvise()
+para avisar a los demás peers que la desconexión es voluntaria.
+
+Para recibir notificaciones y mensajes de la red debes instanciar debes instanciar una clase que implemente el interface `P2PCommListener`.
+Instanciada la clase se debe llamar al método de `ConnectionController`
+void setCommListener(P2PCommListener commListener)
+para que indicarle quien recibirá dichos eventos.
+
+Los métodos que capturan los eventos son los siguientes:
+void onIncomingMessage(String ip, Object message): Recibe el mensaje `message` del peer con ip `ip`
+void onConnectionClosed(String ip): El peer con ip `ip` se cerró de forma voluntaria. No se intentará reconectar con este.
+void onConnectionLost(String ip): Se ha perdido la conexión con el peer con ip `ip` de forma inesperada. Se intentará reconectar con este. Si hay éxito en la reconexión se recibirá un evento onNewConnection.
+void onNewConnection(String ip): Un peer con `ip` ip se ha conectado de forma directa a nuestra aplicación.
+
+** A tener en cuenta
+Si se ejecuta una instancia de la librería con un un puerto de servidor en uso la librería detendrá la aplicación entera al ser imposible que se ejecute de forma normal.
+Los mensajes enviados y recibidos son del tipo Object. Es responsabilidad del usuario el serializar y deserializar correctamente sus objetos.
+La librería únicamente ofrece a la aplicación la capacidad de comunicarse con otros peers. Es responsabilidad del usuario realizar la lógica necesaria para su aplicación, p.ej: mapeo de la posición de los peers vecinos, descubrir peers remotos, etc.
