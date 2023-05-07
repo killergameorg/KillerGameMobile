@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.lisbeth.killergamejoystick.Comunnications.clients.automessenger.Messenger;
 import com.lisbeth.killergamejoystick.Comunnications.communications.ConnectionController;
-import com.lisbeth.killergamejoystick.Comunnications.main.Main;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,9 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @SuppressWarnings("unused")
     static private void startAutoMessenger() {
-        ConnectionController conn = new ConnectionController();
+        ConnectionController conn = new ConnectionController("192.168.95.123", 1234);
         Messenger messenger = new Messenger();
         messenger.setComm(conn);
         conn.setCommListener(messenger);

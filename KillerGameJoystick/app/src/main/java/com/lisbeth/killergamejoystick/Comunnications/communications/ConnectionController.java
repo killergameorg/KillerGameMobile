@@ -1,6 +1,7 @@
 package com.lisbeth.killergamejoystick.Comunnications.communications;
 
 import android.os.Build;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,8 +52,8 @@ public class ConnectionController {
 	
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(ConnectionController.class.getClass().getName());
-	
-	private static final String FILE_PROPERTIES = "connections.properties";
+
+	private String serverIp;
 	private int serverPort;
 	
 	private P2PCommListener commListener;
@@ -63,28 +64,17 @@ public class ConnectionController {
 
 	private long messageId;
 	
-	public ConnectionController() {
-		Properties properties = new Properties();
-		try {
-			properties.load(new FileInputStream(new File(FILE_PROPERTIES)));
-			
-			serverPort = Integer.valueOf(properties.getProperty("server_port"));
-			
-			String peersIp = properties.getProperty("peers");
-			if(peersIp != null) {
-				reconnectionPeers = new ArrayList<>();
-				for(String ip: peersIp.split(",")) {
-					reconnectionPeers.add(ip);
-				}
-			}
+	public ConnectionController(String ip, int port) {
 
-			connectedPeers = new Hashtable<>();
-			peerMessageControl = new Hashtable<>();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(-1);
-		}
+		serverIp = ip;
+		serverPort = port;
+
+		reconnectionPeers = new ArrayList<>();
+		reconnectionPeers.add(serverIp);
+
+		connectedPeers = new Hashtable<>();
+		peerMessageControl = new Hashtable<>();
+
 	}
 
 	void addConnection(Socket socket) throws IOException {
@@ -138,7 +128,7 @@ public class ConnectionController {
 	}
 	
 	public void initialize() {
-		Thread hiloServidor;
+		/*Thread hiloServidor;
 		try {
 			hiloServidor = new Thread(new ServerManager(this, serverPort));
 			hiloServidor.start();
@@ -146,8 +136,9 @@ public class ConnectionController {
 			LOGGER.warning("[FATAL] No se puede crear el socket de servidor. La aplicación se va a cerrar.");
 			e.printStackTrace();
 			System.exit(-1);
-		}
-		
+		}*/
+
+		Log.d("TAG", "initialize: TEST");
 		Thread hiloReconector = new Thread(() -> {
 			while(true) {
 				if(reconnectionPeers.size() > connectedPeers.size()) {
@@ -158,6 +149,15 @@ public class ConnectionController {
 									connect(ip);
 								}
 							} catch (IOException e) {
+								System.out.println("1");
+								System.out.println("2");
+								System.out.println("3");
+								System.out.println("4");
+								System.out.println("5");
+								System.out.println("7");
+								System.out.println("8");
+								System.out.println("9");
+								System.out.println("0");
 								e.printStackTrace();
 							}
 						});
