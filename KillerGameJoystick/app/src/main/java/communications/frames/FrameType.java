@@ -1,4 +1,4 @@
-package com.lisbeth.killergamejoystick.Comunnications.communications.frames;
+package communications.frames;
 
 /**
  * The FrameType enum represents the type of frame that can be sent over the network.

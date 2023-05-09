@@ -1,10 +1,8 @@
-package com.lisbeth.killergamejoystick.Comunnications.communications;
+package communications;
 
 import android.os.Build;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,15 +11,15 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Logger;
 
-import com.lisbeth.killergamejoystick.Comunnications.communications.frames.CloseFrame;
-import com.lisbeth.killergamejoystick.Comunnications.communications.frames.Frame;
-import com.lisbeth.killergamejoystick.Comunnications.communications.frames.MessageFrame;
-import com.lisbeth.killergamejoystick.Comunnications.communications.frames.PingAckFrame;
+import communications.frames.CloseFrame;
+import communications.frames.Frame;
+import communications.frames.MessageFrame;
+import communications.frames.PingAckFrame;
 
 public class ConnectionController {
+	final String TAG = "CCMM";
 
 	private class ConnectionData {
 
@@ -102,6 +100,7 @@ public class ConnectionController {
 	}
 	
 	private void connect(String ip) throws IOException {
+		Log.d(TAG, "connect() called with: ip = [" + ip + "]");
 		addConnection(new Socket(ip, serverPort));	
 	}
 	
@@ -138,7 +137,6 @@ public class ConnectionController {
 			System.exit(-1);
 		}*/
 
-		Log.d("TAG", "initialize: TEST");
 		Thread hiloReconector = new Thread(() -> {
 			while(true) {
 				if(reconnectionPeers.size() > connectedPeers.size()) {
@@ -149,16 +147,7 @@ public class ConnectionController {
 									connect(ip);
 								}
 							} catch (IOException e) {
-								System.out.println("1");
-								System.out.println("2");
-								System.out.println("3");
-								System.out.println("4");
-								System.out.println("5");
-								System.out.println("7");
-								System.out.println("8");
-								System.out.println("9");
-								System.out.println("0");
-								e.printStackTrace();
+								Log.e(TAG, e.getMessage());
 							}
 						});
 					}

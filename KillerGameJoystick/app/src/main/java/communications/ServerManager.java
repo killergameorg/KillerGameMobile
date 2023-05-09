@@ -1,4 +1,4 @@
-package com.lisbeth.killergamejoystick.Comunnications.communications;
+package communications;
 
 import java.io.IOException;
 import java.net.ServerSocket;

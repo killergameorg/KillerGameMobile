@@ -1,4 +1,4 @@
-package com.lisbeth.killergamejoystick.Comunnications.communications.frames;
+package communications.frames;
 
 /**
  * Represents a ping frame that extends the {@link Frame} class.

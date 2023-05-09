@@ -1,4 +1,4 @@
-package com.lisbeth.killergamejoystick.Comunnications.communications;
+package communications;
 
 /**
  * This interface defines the methods that an object must implement to handle P2P communication events.

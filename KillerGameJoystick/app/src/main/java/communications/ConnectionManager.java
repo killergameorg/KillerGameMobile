@@ -1,9 +1,9 @@
-package com.lisbeth.killergamejoystick.Comunnications.communications;
+package communications;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import com.lisbeth.killergamejoystick.Comunnications.communications.frames.Frame;
+import communications.frames.Frame;
 
 class ConnectionManager implements Runnable {
 

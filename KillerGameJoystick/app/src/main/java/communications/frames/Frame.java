@@ -1,4 +1,4 @@
-package com.lisbeth.killergamejoystick.Comunnications.communications.frames;
+package communications.frames;
 
 import java.io.Serializable;
 
