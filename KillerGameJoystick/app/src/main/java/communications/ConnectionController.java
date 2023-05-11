@@ -256,5 +256,8 @@ public class ConnectionController {
 			localIp = ip;
 		}
 	}
-	
+
+	public String getServerIp() {
+		return serverIp;
+	}
 }

@@ -6,40 +6,5 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/lid"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="ID"
-        app:boxCornerRadiusBottomEnd="15dp"
-        app:boxCornerRadiusBottomStart="15dp"
-        app:boxCornerRadiusTopEnd="15dp"
-        app:boxCornerRadiusTopStart="15dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/connect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_below="@id/lid"
-            android:layout_alignStart="@id/lid"
-            android:layout_alignEnd="@id/lid"
-            android:text="Connect"/>
-
-    </RelativeLayout>
-
 
 </RelativeLayout>
