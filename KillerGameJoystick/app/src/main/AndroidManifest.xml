@@ -16,6 +16,9 @@
         android:theme="@style/Theme.KillerGameJoystick"
         tools:targetApi="31">
         <activity
+            android:name=".Controller"
+            android:exported="false" />
+        <activity
             android:name=".Connect"
             android:exported="false">
             <meta-data

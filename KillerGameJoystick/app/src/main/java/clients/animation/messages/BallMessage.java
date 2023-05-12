@@ -1,9 +1,9 @@
-package animation.messages;
+package clients.animation.messages;
 
 import java.io.Serializable;
 
-import animation.Ball;
-import animation.Edge;
+import clients.animation.Ball;
+import clients.animation.Edge;
 
 public class BallMessage implements Serializable {
 

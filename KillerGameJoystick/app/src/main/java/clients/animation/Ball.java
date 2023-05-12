@@ -1,4 +1,4 @@
-package animation;
+package clients.animation;
 
 import java.io.Serializable;
 import java.util.logging.Logger;

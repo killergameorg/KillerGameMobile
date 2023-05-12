@@ -19,7 +19,8 @@ import communications.frames.MessageFrame;
 import communications.frames.PingAckFrame;
 
 public class ConnectionController {
-	final String TAG = "CCMM";
+
+	String TAG = this.getClass().getName();
 
 	private class ConnectionData {
 
@@ -76,6 +77,7 @@ public class ConnectionController {
 	}
 
 	void addConnection(Socket socket) throws IOException {
+		Log.d(TAG, "addConnection() called with: socket = [" + socket.getLocalAddress() + "]");
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 		
@@ -101,7 +103,7 @@ public class ConnectionController {
 	
 	private void connect(String ip) throws IOException {
 		Log.d(TAG, "connect() called with: ip = [" + ip + "]");
-		addConnection(new Socket(ip, serverPort));	
+		addConnection(new Socket(ip, serverPort));
 	}
 	
 	boolean controlPeerMessageId(String ip, long messageId) {
@@ -198,21 +200,11 @@ public class ConnectionController {
 	void send(Frame frame) {
 		String ip = frame.getTargetIp();
 		if(connectedPeers.containsKey(ip)) {
-			try {
-				sendMessage(connectedPeers.get(ip), frame);
-			} catch (IOException e) {
-				e.printStackTrace();
-				killConnection(ip, false);
-			}
+			sendMessage(connectedPeers.get(ip), frame);
 		} else {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 				connectedPeers.forEach((ipPeer, conn) -> {
-					try {
-						sendMessage(conn, frame);
-					} catch (IOException e) {
-						e.printStackTrace();
-						killConnection(ipPeer, false);
-					}
+					sendMessage(conn, frame);
 				});
 			}
 		}
@@ -230,13 +222,21 @@ public class ConnectionController {
 		send(frame);
 	}
 	
-	private void sendMessage(ConnectionData connection, Frame frame) throws IOException {
-		ObjectOutputStream out = connection.outStream;
-		out.writeObject(frame);
-		out.flush();
+	private void sendMessage(ConnectionData connection, Frame frame) {
+		new Thread(() -> {
+			try {
+				ObjectOutputStream out = connection.outStream;
+				out.writeObject(frame);
+				out.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+				killConnection(frame.getTargetIp(), false);
+			}
+		}).start();
 	}
 	
 	public void sendPrivate(String ip, Object message) {
+		Log.d(TAG, "sendPrivate() called with: ip = [" + ip + "], message = [" + message + "]");
 		Frame frame = generateMessageFrame(ip);
 		frame.setPayload(message);
 		send(frame);
@@ -246,6 +246,7 @@ public class ConnectionController {
 		this.commListener = commListener;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			connectedPeers.forEach((peerIp, connection) -> {
+				Log.d(TAG, "setCommListener() called with: commListener = [" + commListener + "]");
 				commListener.onNewConnection(peerIp);
 			});
 		}
