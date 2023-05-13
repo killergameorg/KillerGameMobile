@@ -1,11 +1,10 @@
 package clients.asteroids;
 
+import android.content.Intent;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import com.lisbeth.killergamejoystick.Connect;
+import com.lisbeth.killergamejoystick.Controller;
 
 import clients.asteroids.messages.IdMessage;
 import clients.asteroids.messages.newShip;
@@ -28,11 +27,13 @@ public class AsteroidsController implements P2PCommListener{
 	@Override
 	public void onConnectionClosed(String ip) {
 		Log.d(TAG, "onConnectionClosed() called with: ip = [" + ip + "]");
+		AndroidHandler.ControllerActivity.finish();
 	}
 
 	@Override
 	public void onConnectionLost(String ip) {
 		Log.d(TAG, "onConnectionLost() called with: ip = [" + ip + "]");
+		AndroidHandler.ControllerActivity.finish();
 	}
 
 	@Override
@@ -40,6 +41,7 @@ public class AsteroidsController implements P2PCommListener{
 		Log.d(TAG, "onIncomingMessage() called with: ip = [" + ip + "], message = [" + message + "]");
 		if (message instanceof newShip) {
 			AndroidHandler.shipId = ((newShip) message).shipId;
+			AndroidHandler.ConnectActivity.launchActivity(Controller.class);
 		}
 	}
 

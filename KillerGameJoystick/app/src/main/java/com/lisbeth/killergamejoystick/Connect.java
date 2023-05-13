@@ -20,7 +20,6 @@ import communications.ConnectionController;
 public class Connect extends AppCompatActivity {
 
     static final String TAG = "CCMM";
-    static ConnectionController conn;
     static AnimationController animationViewer;
     static Messenger messenger;
 
@@ -29,49 +28,48 @@ public class Connect extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
 
+        AndroidHandler.ConnectActivity = this;
+
         findViewById(R.id.connect).setOnClickListener(view -> {
 
             String id = ((TextInputLayout)findViewById(R.id.lid)).getEditText().getText().toString();
-            //startAutoMessenger(id);
             startAsteroids(id);
 
         });
 
     }
 
+    public void launchActivity(Class c) {
+        Intent intent = new Intent(Connect.this, c);
+        Connect.this.startActivity(intent);
+    }
+
     static private void startAnimation(String id) {
         Log.d(TAG, "startAnimation() called with: id = [" + id + "]");
-        conn = new ConnectionController("192.168.1."+id, 1234);
+        AndroidHandler.conn = new ConnectionController("192.168.1."+id, 1234);
         animationViewer = new AnimationController();
-        animationViewer.setComm(conn);
-        conn.setCommListener(animationViewer);
-        conn.initialize();
+        animationViewer.setComm(AndroidHandler.conn);
+        AndroidHandler.conn.setCommListener(animationViewer);
+        AndroidHandler.conn.initialize();
     }
 
     static private void startAutoMessenger(String id) {
         Log.d(TAG, "startAutoMessenger() called with: id = [" + id + "]");
-        conn = new ConnectionController("192.168.1."+id, 1234);
+        AndroidHandler.conn = new ConnectionController("192.168.1."+id, 1234);
         messenger = new Messenger();
-        messenger.setComm(conn);
-        conn.setCommListener(messenger);
-        conn.initialize();
+        messenger.setComm(AndroidHandler.conn);
+        AndroidHandler.conn.setCommListener(messenger);
+        AndroidHandler.conn.initialize();
     }
 
-    @SuppressWarnings("unused")
     private void startAsteroids(String id) {
         Log.d(TAG, "startAsteroids() called with: id = [" + id + "]");
-        ConnectionController conn = new ConnectionController("192.168.1."+id, 1234);
-        AsteroidsController asteroids = new AsteroidsController();
-        asteroids.setComm(conn);
-        conn.setCommListener(asteroids);
-        conn.initialize();
+        AndroidHandler.conn = new ConnectionController("192.168.1."+id, 1234);
+        AndroidHandler.asteroids = new AsteroidsController();
 
-        AndroidHandler.conn = conn;
-        AndroidHandler.asteroids = asteroids;
-        AndroidHandler.shipId = 0;
-
-        Intent intent = new Intent(Connect.this, Controller.class);
-        Connect.this.startActivity(intent);
+        AndroidHandler.asteroids.setComm(AndroidHandler.conn);
+        AndroidHandler.conn.setCommListener(AndroidHandler.asteroids);
+        AndroidHandler.conn.initialize();
     }
 
 }
