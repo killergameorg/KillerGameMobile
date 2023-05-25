@@ -18,10 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private VideoView videoBackground;
     private boolean isSound;
     private ImageButton soundHandler;
-    Drawable musicOn;
-    Drawable musicOff;
-
     private MediaPlayer music;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         videoBackground = findViewById(R.id.backgroundVideo);
         music = MediaPlayer.create(MainActivity.this, R.raw.bg_arcade_game);
         Resources res = getResources();
-        musicOn = ResourcesCompat.getDrawable(res, R.drawable.ic_baseline_music_note_24, null);
-        musicOff = ResourcesCompat.getDrawable(res, R.drawable.ic_baseline_music_off_24, null);
         soundHandler = findViewById(R.id.muteSound);
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.bg_background_connect);
         videoBackground.setVideoURI(uri);
@@ -99,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
         if (isSound){
             music.pause();
             isSound = false;
-            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
 
         }else{
             music.start();
             isSound = true;
-            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
         }
 
     }
