@@ -18,6 +18,7 @@ public class SoundController {
             context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
             isServiceBound = true;
         }
+        //service.onCreate();
     }
 
     public static void unbindService(Context context) {
@@ -45,7 +46,7 @@ public class SoundController {
         }
     }
 
-    private static ServiceConnection serviceConnection = new ServiceConnection() {
+    private static final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             SoundService.LocalBinder binder = (SoundService.LocalBinder) iBinder;

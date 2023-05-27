@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.lisbeth.killergamejoystick.R;
 
@@ -24,6 +25,7 @@ public class SoundService extends Service {
         mediaPlayer = MediaPlayer.create(this, R.raw.bg_arcade_game);
         mediaPlayer.setLooping(true);
         mediaPlayer.setVolume(100, 100);
+        Log.d("--", "On create");
     }
 
     @Override
