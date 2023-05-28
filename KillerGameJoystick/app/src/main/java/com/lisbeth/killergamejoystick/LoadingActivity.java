@@ -22,10 +22,7 @@ import services.SoundService;
 public class LoadingActivity extends AppCompatActivity {
     private VideoView videoBackground;
     private ImageButton soundHandler;
-
-
-
-
+    private boolean isServiceBound;
     @Override
     protected void onStart() {
         super.onStart();
@@ -40,7 +37,17 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         videoBackground = findViewById(R.id.backgroundVideoLoadingActivity);
         soundHandler = findViewById(R.id.muteSoundLoadingActivity);
-        SoundController.bindService(this);
+//        if (AppState.getAppState().getIsSoundMusic()) {
+//            SoundController.bindService(this);
+//            isServiceBound = true;
+//            SoundController.play();
+//        }
+
+        if (AppState.getAppState().getIsSoundMusic()){
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
+        }else{
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
+        }
         //Video config
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.bg_background_connect);
         videoBackground.setVideoURI(uri);
@@ -57,7 +64,7 @@ public class LoadingActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if (AppState.getAppState().getIsSoundMusic()) {
-            SoundController.stop();
+          //  SoundController.stop();
             AppState.getAppState().setIsSoundMusic(false);
         }
     }
@@ -65,8 +72,11 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     protected void onRestart(){
         if (AppState.getAppState().getIsSoundMusic()){
-            SoundController.play();
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
+        }else{
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
         }
+
         videoBackground.start();
         super.onRestart();
     }
@@ -74,26 +84,31 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         videoBackground.suspend();
-        SoundController.pause();
+     //   SoundController.pause();
         super.onPause();
     }
 
     @Override
     protected void onDestroy(){
         videoBackground.stopPlayback();
-        SoundController.unbindService(this);
-        //stopService(SoundService.class);
+        if (isServiceBound) {
+      //      SoundController.unbindService(this);
+            isServiceBound = false;
+        }
         super.onDestroy();
     }
 
+
+
+
     public void soundControl(View view) {
         if (AppState.getAppState().getIsSoundMusic()){
-            SoundController.pause();
+         //   SoundController.pause();
             AppState.getAppState().setIsSoundMusic(false);
             soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
 
         }else{
-            SoundController.play();
+          //  SoundController.play();
             AppState.getAppState().setIsSoundMusic(true);
             soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
         }

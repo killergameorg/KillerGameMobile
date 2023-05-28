@@ -23,18 +23,7 @@ import android.content.Context;
 
 public class MainActivity extends AppCompatActivity {
     private VideoView videoBackground;
-
     private ImageButton soundHandler;
-
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        SoundController.play();
-
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +32,17 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        // Sound implementation
-        SoundController.bindService(this);
-        videoBackground = findViewById(R.id.backgroundVideo);
         soundHandler = findViewById(R.id.muteSound);
+
+        if (AppState.getAppState().getIsSoundMusic()){
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
+        }else{
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
+        }
+        // Sound implementation
+    //    SoundController.bindService(this);
+        videoBackground = findViewById(R.id.backgroundVideo);
+
 
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.bg_background_connect);
         videoBackground.setVideoURI(uri);
@@ -65,60 +61,55 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if (AppState.getAppState().getIsSoundMusic()) {
-            SoundController.stop();
+       //     SoundController.stop();
             AppState.getAppState().setIsSoundMusic(false);
         }
     }
-    /*
-        @Override
-        protected void onPostResume(){
-            videoBackground.resume();
-            if (AppState.getAppState().getIsSoundMusic()){
-                mediaPlayerService.play();
-            }
-            super.onPostResume();
-        }
 
-        @Override
-        protected void onResume(){
-            if (AppState.getAppState().getIsSoundMusic()){
-                mediaPlayerService.play();
-            }
-            videoBackground.start();
-            super.onResume();
-        }
-      */
     @Override
     protected void onRestart(){
         if (AppState.getAppState().getIsSoundMusic()){
-            SoundController.play();
+        //    SoundController.play();
         }
         videoBackground.start();
         super.onRestart();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (AppState.getAppState().getIsSoundMusic()){
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
+        }else{
+            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
+        }
+   //     SoundController.bindService(this);
+    //    SoundController.play();
+    }
     @Override
     protected void onPause(){
         videoBackground.suspend();
-        SoundController.pause();
+        if (!AppState.getAppState().getIsSoundMusic()) {
+         //   SoundController.pause();
+        }
         super.onPause();
     }
 
     @Override
     protected void onDestroy(){
         videoBackground.stopPlayback();
-        SoundController.unbindService(this);
-        //stopService(SoundService.class);
+      //  SoundController.unbindService(this);
         super.onDestroy();
     }
 
     public void soundControl(View view) {
         if (AppState.getAppState().getIsSoundMusic()){
-            SoundController.pause();
+          //  SoundController.pause();
             AppState.getAppState().setIsSoundMusic(false);
             soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
 
         }else{
-            SoundController.play();
+           // SoundController.play();
             AppState.getAppState().setIsSoundMusic(true);
             soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
         }

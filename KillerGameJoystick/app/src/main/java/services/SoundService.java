@@ -25,7 +25,6 @@ public class SoundService extends Service {
         mediaPlayer = MediaPlayer.create(this, R.raw.bg_arcade_game);
         mediaPlayer.setLooping(true);
         mediaPlayer.setVolume(100, 100);
-        Log.d("--", "On create");
     }
 
     @Override
