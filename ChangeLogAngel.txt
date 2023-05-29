@@ -1,0 +1,14 @@
+Dentro de SRC > MAIN -> Actualizado el Android Manifest para incluir mis activity.
+
+Dentro de Java> com > lisbeth > killergamejoystick > añadidas las ActiveGame
+						     y GameConfig Activities
+
+Debtri de Res > Drawable > button Background.xml
+		Layout	 > activity_active_game.xml y activity_game_config.xml
+		Values	 > Actualizado para añadir los colores que uso
+	     *	Raw	 > Nueva carpeta, ahí es donde está el MP3 con el sonido
+			   de pulsar los botones de la GameConfigActivity
+
+
+		
+
