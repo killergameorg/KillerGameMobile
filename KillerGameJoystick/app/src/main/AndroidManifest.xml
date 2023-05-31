@@ -13,9 +13,27 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".LoadingActivity"
+            android:name=".GameConfig"
             android:screenOrientation="landscape"
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ActiveGameActivity"
+            android:exported="false"
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+
+        <activity
+            android:name=".LoadingActivity"
+            android:exported="false"
+            android:screenOrientation="landscape">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -34,8 +52,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <service android:name="services.SoundService" />
 
+        <service android:name="services.SoundService" />
     </application>
 
 </manifest>

@@ -9,4 +9,21 @@ public class PackageShipMobile implements Serializable {
     private boolean isMaster;
     private Object message;
 
+    public PackageShipMobile(int accountID, boolean isMaster, Object message ){
+        this.accountId = accountID;
+        this.isMaster = isMaster;
+        this.message = message;
+    }
+
+    public Object getMessage(){
+        return this.message;
+    }
+
+    public boolean getIsMaster(){
+        return this.isMaster;
+    }
+
+    public int getAccountId(){
+        return this.accountId;
+    }
 }

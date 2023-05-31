@@ -139,15 +139,7 @@ public class ConnectionController {
     }
 
     public void initialize() {
-		/*Thread hiloServidor;
-		try {
-			hiloServidor = new Thread(new ServerManager(this, serverPort));
-			hiloServidor.start();
-		} catch (IOException e) {
-			LOGGER.warning("[FATAL] No se puede crear el socket de servidor. La aplicación se va a cerrar.");
-			e.printStackTrace();
-			System.exit(-1);
-		}*/
+
 
         Thread hiloReconector = new Thread(() -> {
             while(true) {

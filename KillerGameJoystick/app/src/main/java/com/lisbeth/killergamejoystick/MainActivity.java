@@ -15,11 +15,16 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.VideoView;
 import DTO.AppState;
+import clients.asteroids.AsteroidsController;
+import communications.AndroidHandler;
+import communications.ConnectionController;
 import controllers.SoundController;
 import services.SoundService;
 
 
 import android.content.Context;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private VideoView videoBackground;
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         soundHandler = findViewById(R.id.muteSound);
+        AndroidHandler.ConnectActivity = this;
 
         soundMusicInitializer();
 
@@ -99,7 +105,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tryToConnect(View view) {
-        Intent intent = new Intent(MainActivity.this, LoadingActivity.class);
+        Intent intent = new Intent(MainActivity.this, GameConfig.class);
         startActivity(intent);
     }
+
+    public void launchActivity(Class c) {
+
+        startAsteroids();
+
+    }
+
+    private void startAsteroids() {
+        Random ran = new Random();
+        AndroidHandler.conn = new ConnectionController("192.168.1."+ran.nextInt(13)+1, 1234);
+        AndroidHandler.asteroids = new AsteroidsController();
+        AndroidHandler.asteroids.setComm(AndroidHandler.conn);
+        AndroidHandler.conn.setCommListener(AndroidHandler.asteroids);
+        AndroidHandler.conn.initialize();
+    }
+
 }
