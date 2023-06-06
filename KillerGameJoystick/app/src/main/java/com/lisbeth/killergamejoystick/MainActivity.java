@@ -39,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         soundHandler = findViewById(R.id.muteSound);
         AndroidHandler.ConnectActivity = this;
-
         soundMusicInitializer();
-
         videoBackground = findViewById(R.id.backgroundVideo);
 
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.bg_background_connect);
@@ -109,11 +107,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void launchActivity(Class c) {
 
-        startAsteroids();
-
-    }
 
     private void startAsteroids() {
         Random ran = new Random();
@@ -122,6 +116,16 @@ public class MainActivity extends AppCompatActivity {
         AndroidHandler.asteroids.setComm(AndroidHandler.conn);
         AndroidHandler.conn.setCommListener(AndroidHandler.asteroids);
         AndroidHandler.conn.initialize();
+    }
+
+    public void goToConfigActivity(){
+        Intent intent = new Intent(MainActivity.this, GameConfig.class);
+        startActivity(intent);
+    }
+
+    public void goToLoadingActivity(){
+        Intent intent = new Intent(MainActivity.this, LoadingActivity.class);
+        startActivity(intent);
     }
 
 }

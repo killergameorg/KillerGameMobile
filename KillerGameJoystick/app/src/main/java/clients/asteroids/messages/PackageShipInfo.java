@@ -2,23 +2,27 @@ package clients.asteroids.messages;
 
 import java.io.Serializable;
 
+
 public class PackageShipInfo implements Serializable {
-    private static final long serialVersionUID = 2167L;
+    private static final long serialVersionUID = 2753167L;
 
     private int life;
-    private int teamScore;
+    private Team team;
 
-
-    public PackageShipInfo(int life, int teamScore) {
+    public PackageShipInfo(int life, Team team) {
         this.life = life;
-        this.teamScore = teamScore;
+        this.team = team;
     }
 
     public int getLife() {
         return life;
     }
 
-    public int getScore() {
-        return teamScore;
+    /**
+     * @return the team
+     */
+    public Team getTeam() {
+        return team;
     }
+
 }

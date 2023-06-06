@@ -3,15 +3,15 @@ package clients.asteroids.messages;
 import java.io.Serializable;
 
 public class PackageGameState implements Serializable {
-    private static final long serialVersionUID = 9167L;
+    private static final long serialVersionUID = 91345667L;
 
-    private GameStateTypes gameState;
+    private GameState gameState;
 
-    public PackageGameState(GameStateTypes gameState) {
+    public PackageGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
-    public GameStateTypes getGameState() {
+    public GameState getGameState() {
         return gameState;
     }
 

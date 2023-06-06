@@ -2,28 +2,38 @@ package clients.asteroids.messages;
 
 import java.io.Serializable;
 
-public class PackageShipMobile implements Serializable {
-    private static final long serialVersionUID = 9137L;
+public class PackageShipMobile implements PackageMobileCommunications {
+    private static final long serialVersionUID = 9133567L;
 
     private int accountId;
     private boolean isMaster;
     private Object message;
 
-    public PackageShipMobile(int accountID, boolean isMaster, Object message ){
-        this.accountId = accountID;
+    public PackageShipMobile(int accountId, boolean isMaster, Object message) {
+        this.accountId = accountId;
         this.isMaster = isMaster;
         this.message = message;
     }
 
-    public Object getMessage(){
-        return this.message;
+    /**
+     * @return the accountId
+     */
+    public int getAccountId() {
+        return accountId;
     }
 
-    public boolean getIsMaster(){
-        return this.isMaster;
+    /**
+     * @return the isMaster
+     */
+    public boolean isMaster() {
+        return isMaster;
     }
 
-    public int getAccountId(){
-        return this.accountId;
+    /**
+     * @return the message
+     */
+    public Object getMessage() {
+        return message;
     }
+
 }
