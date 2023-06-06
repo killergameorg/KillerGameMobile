@@ -2,6 +2,7 @@ package com.lisbeth.killergamejoystick;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,6 +80,11 @@ public class GameConfig extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void goToJoystick() {
+        Intent intent = new Intent(this, ActiveGameActivity.class);
+        startActivity(intent);
     }
 
 }

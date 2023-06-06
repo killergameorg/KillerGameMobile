@@ -60,11 +60,7 @@ public class AsteroidsController implements P2PCommListener {
     @Override
     public void onNewConnection(String ip) {
         Log.d(TAG, "onNewConnection() called with: ip = [" + ip + "]");
-        /*
-        IdMessage idMessage = new IdMessage();
-        idMessage.id = id;
-        comm.sendPrivate(ip, idMessage);
-    */}
+  }
 
     // TODO
     public void sendShipControlMessage(Object message) {

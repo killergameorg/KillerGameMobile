@@ -27,15 +27,14 @@ public class AccountInfo {
     }
 
     public synchronized void setShipId(int shipId) {
-        if(shipId != -1  ){
-            AndroidHandler.ConnectActivity.goToLoadingActivity();
-        }
         this.shipId = shipId;
     }
 
     public synchronized void setMobilMaster(boolean mobilMaster) {
         if(isMobilMaster && gameState == GameState.LOBBY){
             AndroidHandler.ConnectActivity.goToConfigActivity();
+        }if(!isMobilMaster && gameState == GameState.LOBBY){
+            AndroidHandler.ConnectActivity.goToLoadingActivity();
         }
         isMobilMaster = mobilMaster;
     }
@@ -53,6 +52,13 @@ public class AccountInfo {
     }
 
     public synchronized void setGameState(GameState gameState) {
+        if(gameState == GameState.GAME){
+            if(isMobilMaster) {
+                AndroidHandler.ControllerConfigActivity.goToJoystick();
+            } else{
+                AndroidHandler.ControllerLoadingActivity.goToJoystick();
+            }
+        }
         this.gameState = gameState;
     }
 

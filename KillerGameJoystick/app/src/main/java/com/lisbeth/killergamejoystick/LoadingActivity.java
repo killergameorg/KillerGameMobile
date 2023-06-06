@@ -2,6 +2,7 @@ package com.lisbeth.killergamejoystick;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -93,6 +94,11 @@ public class LoadingActivity extends AppCompatActivity {
             soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
         }
 
+    }
+
+    public void goToJoystick() {
+        Intent intent = new Intent(this, ActiveGameActivity.class);
+        startActivity(intent);
     }
 
 }
