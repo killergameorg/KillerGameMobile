@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import DTO.AccountInfo;
 import DTO.AppState;
 
 
@@ -32,7 +34,7 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         videoBackground = findViewById(R.id.backgroundVideoLoadingActivity);
         soundHandler = findViewById(R.id.muteSoundLoadingActivity);
-        soundMusicInitializer();
+
         if (AppState.getAppState().getIsSoundMusic()){
             soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
         }else{
@@ -49,13 +51,7 @@ public class LoadingActivity extends AppCompatActivity {
 
     }
 
-    private void soundMusicInitializer(){
-        if (AppState.getAppState().getIsSoundMusic()){
-            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
-        }else{
-            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
-        }
-    }
+
 
     @Override
     protected void onStop() {
@@ -64,7 +60,6 @@ public class LoadingActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart(){
-        soundMusicInitializer();
         videoBackground.start();
         super.onRestart();
     }
@@ -84,21 +79,13 @@ public class LoadingActivity extends AppCompatActivity {
 
 
 
-    public void soundControl(View view) {
-        if (AppState.getAppState().getIsSoundMusic()){
-            AppState.getAppState().setIsSoundMusic(false);
-            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
 
-        }else{
-            AppState.getAppState().setIsSoundMusic(true);
-            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
-        }
-
-    }
 
     public void goToJoystick() {
+        Toast.makeText(this, AccountInfo.getAccount().getTeam().getTeamName().name(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, ActiveGameActivity.class);
         startActivity(intent);
+
     }
 
 }

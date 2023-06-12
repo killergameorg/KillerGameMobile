@@ -3,6 +3,7 @@ package com.lisbeth.killergamejoystick;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,12 +12,18 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import DTO.AppState;
+import clients.asteroids.AsteroidsController;
+import clients.asteroids.messages.PackageJoystick;
+import communications.AndroidHandler;
+
 public class ActiveGameActivity extends AppCompatActivity {
 
     private boolean leftPressed = false;
     private boolean rightPressed = false;
     private boolean minusPressed = false;
     private boolean plusPressed = false;
+    private AsteroidsController asteroids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +32,7 @@ public class ActiveGameActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_game);
+        this.asteroids = AndroidHandler.asteroids;
 
         Button leftButton = findViewById(R.id.button_left);
         leftButton.setOnTouchListener(new View.OnTouchListener() {
@@ -87,16 +95,21 @@ public class ActiveGameActivity extends AppCompatActivity {
         });
     }
 
+    public void goToHome(){
+        Intent intent = new Intent(this, MainActivity.class);
+        asteroids.onConnectionClosed(AppState.getAppState().getIp());
+        startActivity(intent);
+    }
     private void sendPackage() {
-        //TEST BUTTON FUNCTIONALITY
-        // Update the button state text view
         TextView buttonStateText = findViewById(R.id.button_state_text);
         String buttonState = "Button State: Left: " + leftPressed + ", Right: " + rightPressed + ", Minus: " + minusPressed + ", Plus: " + plusPressed;
         buttonStateText.setText(buttonState);
+        PackageJoystick joystick = new PackageJoystick(leftPressed, rightPressed, minusPressed, plusPressed);
+        asteroids.sendShipControlMessage(joystick);
+    }
 
-        // TODO: Send the package containing the controller object with the current button states
-        // Implement the logic to send the package here or call a separate method to handle it.
-        // Replace the following comment with code to send the package:
-        // sendPackage(controller);
+    public void goToConnectActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

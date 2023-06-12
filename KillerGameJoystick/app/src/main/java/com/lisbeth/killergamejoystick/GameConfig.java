@@ -14,11 +14,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import DTO.AccountInfo;
+import clients.asteroids.AsteroidsController;
+import clients.asteroids.messages.PackageJoystick;
+import communications.AndroidHandler;
 
 public class GameConfig extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
-
+    private AsteroidsController asteroids;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
+    private boolean minusPressed = false;
+    private boolean plusPressed = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -26,7 +37,7 @@ public class GameConfig extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_config);
-
+        this.asteroids = AndroidHandler.asteroids;
         mediaPlayer = MediaPlayer.create(this, R.raw.menu_button_click);
 
         Button leftButton = findViewById(R.id.button_left);
@@ -36,7 +47,12 @@ public class GameConfig extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mediaPlayer.seekTo(0);
                     mediaPlayer.start();
+                    leftPressed = true;
+                    sendPackage();
                     // Send package for left button pressed
+                }else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    leftPressed = false;
+                    sendPackage();
                 }
                 return false;
             }
@@ -49,7 +65,11 @@ public class GameConfig extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mediaPlayer.seekTo(0);
                     mediaPlayer.start();
-                    // Send package for right button pressed
+                    rightPressed = true;
+                    sendPackage();
+                }else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    rightPressed = false;
+                    sendPackage();
                 }
                 return false;
             }
@@ -62,7 +82,11 @@ public class GameConfig extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mediaPlayer.seekTo(0);
                     mediaPlayer.start();
-                    // Send package for minus button pressed
+                    minusPressed = true;
+                    sendPackage();
+                }else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    minusPressed = false;
+                    sendPackage();
                 }
                 return false;
             }
@@ -75,7 +99,11 @@ public class GameConfig extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mediaPlayer.seekTo(0);
                     mediaPlayer.start();
-                    // Send package for plus button pressed
+                    plusPressed = true;
+                    sendPackage();
+                }else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    plusPressed = false;
+                    sendPackage();
                 }
                 return false;
             }
@@ -83,8 +111,18 @@ public class GameConfig extends AppCompatActivity {
     }
 
     public void goToJoystick() {
+        Toast.makeText(this, AccountInfo.getAccount().getTeam().getTeamName().name(), Toast.LENGTH_SHORT).show();
+
         Intent intent = new Intent(this, ActiveGameActivity.class);
         startActivity(intent);
+    }
+
+    private void sendPackage() {
+        TextView buttonStateText = findViewById(R.id.button_state_text);
+        String buttonState = "Button State: Left: " + leftPressed + ", Right: " + rightPressed + ", Minus: " + minusPressed + ", Plus: " + plusPressed;
+        buttonStateText.setText(buttonState);
+        PackageJoystick joystick = new PackageJoystick(leftPressed, rightPressed, minusPressed, plusPressed);
+        asteroids.sendShipControlMessage(joystick);
     }
 
 }

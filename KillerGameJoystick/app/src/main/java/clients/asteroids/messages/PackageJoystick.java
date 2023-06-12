@@ -19,7 +19,7 @@ public class PackageJoystick implements Serializable {
         this.rotateLeft = rotateLeft;
         this.rotateRight = rotateRight;
         this.accelerate = accelerate;
-        this.shoot = shoot;
+        this.shoot =  shoot;
     }
 
     /**

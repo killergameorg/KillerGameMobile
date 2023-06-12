@@ -2,8 +2,11 @@ package clients.asteroids;
 
 import android.util.Log;
 
+import DTO.AccountInfo;
 import clients.asteroids.KnowNewConnection.KnowNewConnectionController;
 import clients.asteroids.messages.PackageGameState;
+import clients.asteroids.messages.PackageJoystick;
+import clients.asteroids.messages.PackageMobileSetAttributes;
 import clients.asteroids.messages.PackageShipMobile;
 import clients.asteroids.messages.packagesToKnow.OptionsPackageAsk;
 import clients.asteroids.messages.packagesToKnow.PackageAsk;
@@ -22,6 +25,7 @@ public class AsteroidsController implements P2PCommListener {
         Log.d(TAG, "AsteroidsController() called");
         this.knowNewConnectionController = new KnowNewConnectionController();
     }
+
     @Override
     public void onConnectionClosed(String ip) {
         Log.d(TAG, "onConnectionClosed() called with: ip = [" + ip + "]");
@@ -37,34 +41,31 @@ public class AsteroidsController implements P2PCommListener {
     @Override
     public void onIncomingMessage(String ip, Object message) {
 
-        if(message instanceof PackageGameState){
-            this.getCluster().setGameState(((PackageGameState) message).getGameState());
-        }else if(message instanceof PackageAsk){
-           this.getKnowNewConnectionController().manageKnowConnection((PackageAsk) message, this.getComm());
+        if (message instanceof PackageMobileSetAttributes) {
+            this.getCluster().setAttributes((PackageMobileSetAttributes) message);
+        } else if (message instanceof PackageAsk) {
+            this.getKnowNewConnectionController().manageKnowConnection((PackageAsk) message, this.getComm());
+        } else if (message instanceof PackageShipMobile) {
+            if (((PackageShipMobile) message).getAccountId() == AccountInfo.getAccount().getShipId()) {
+                this.getCluster().managePackageShipMobile((PackageShipMobile) message);
+            }
         }
-        /*Log.d(TAG, "onIncomingMessage() called with: ip = [" + ip + "], message = [" + message + "]");
-
-
-        if (message instanceof PackageShipMobile) {
-            AndroidHandler.shipId = ((newShip) message).shipId;
-            AndroidHandler.ConnectActivity.launchActivity(ActiveGameActivity.class);
-        }*/
     }
 
 
-
-    private boolean isPackageShipInfo(PackageShipMobile message){
-        return message.getMessage() instanceof  PackageGameState;
+    private boolean isPackageShipInfo(PackageShipMobile message) {
+        return message.getMessage() instanceof PackageGameState;
     }
 
     @Override
     public void onNewConnection(String ip) {
         Log.d(TAG, "onNewConnection() called with: ip = [" + ip + "]");
-  }
+    }
 
-    // TODO
-    public void sendShipControlMessage(Object message) {
-        comm.sendFlood(message);
+
+    public void sendShipControlMessage(PackageJoystick message) {
+        PackageShipMobile packageMobile = new PackageShipMobile(AccountInfo.getAccount().getShipId(), AccountInfo.getAccount().isMobilMaster(), message);
+        comm.sendFlood(packageMobile);
     }
 
     public void setComm(ConnectionController comm) {

@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.VideoView;
 import DTO.AppState;
@@ -29,6 +30,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     private VideoView videoBackground;
     private ImageButton soundHandler;
+    private Button connectButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,15 +105,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tryToConnect(View view) {
-        Intent intent = new Intent(MainActivity.this, GameConfig.class);
-        startActivity(intent);
+        startAsteroids();
+
     }
 
 
 
     private void startAsteroids() {
         Random ran = new Random();
-        AndroidHandler.conn = new ConnectionController("192.168.1."+ran.nextInt(13)+1, 1234);
+        AppState.getAppState().setIp("192.168.1."+ran.nextInt(13)+1);
+        AndroidHandler.conn = new ConnectionController(AppState.getAppState().getIp(), 1234);
         AndroidHandler.asteroids = new AsteroidsController();
         AndroidHandler.asteroids.setComm(AndroidHandler.conn);
         AndroidHandler.conn.setCommListener(AndroidHandler.asteroids);

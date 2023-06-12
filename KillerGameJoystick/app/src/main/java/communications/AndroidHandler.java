@@ -17,7 +17,7 @@ public class AndroidHandler {
     public static ConnectionController conn;
     public static AsteroidsController asteroids;
     public static int shipId;
-
+    public static ActiveGameActivity JoystickActivity;
     public static MainActivity ConnectActivity;
     public static LoadingActivity ControllerLoadingActivity;
     public static GameConfig ControllerConfigActivity;

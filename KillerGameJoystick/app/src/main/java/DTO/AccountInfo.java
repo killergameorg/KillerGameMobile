@@ -1,6 +1,8 @@
 package DTO;
 
+import clients.asteroids.AsteroidsController;
 import clients.asteroids.messages.GameState;
+import clients.asteroids.messages.Team;
 import communications.AndroidHandler;
 
 public class AccountInfo {
@@ -8,8 +10,10 @@ public class AccountInfo {
     private int shipId;
     private boolean isMobilMaster;
     private int lifeScore;
+    private Team team;
     private static AccountInfo account ;
     private GameState gameState;
+
 
     private AccountInfo() {
             this.shipId = -1;
@@ -58,6 +62,12 @@ public class AccountInfo {
             } else{
                 AndroidHandler.ControllerLoadingActivity.goToJoystick();
             }
+        }else if(gameState == GameState.GAME_END){
+            if(isMobilMaster) {
+                AndroidHandler.JoystickActivity.goToConnectActivity();
+            } else{
+                AndroidHandler.JoystickActivity.goToConnectActivity();
+            }
         }
         this.gameState = gameState;
     }
@@ -67,5 +77,13 @@ public class AccountInfo {
             AccountInfo.account = new AccountInfo();
         }
         return AccountInfo.account;
+    }
+
+    public synchronized Team getTeam() {
+        return team;
+    }
+
+    public synchronized void setTeam(Team team) {
+        this.team = team;
     }
 }
