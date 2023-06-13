@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Killer Game Joystick</string>
+    <string name="press_to_connect">PRESS TO CONNECT</string>
+    <string name="silence">silence</string>
+    <string name="connecting">Connecting...</string>
+
 </resources>
