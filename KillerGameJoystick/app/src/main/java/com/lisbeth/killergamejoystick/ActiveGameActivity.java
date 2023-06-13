@@ -112,4 +112,9 @@ public class ActiveGameActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    public void goToGameOver(){
+        Intent intent = new Intent(this, GameOverActivity.class);
+        startActivity(intent);
+    }
 }

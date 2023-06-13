@@ -48,7 +48,11 @@ public class AccountInfo {
     }
 
     public synchronized void setLifeScore(int lifeScore) {
+
         this.lifeScore = lifeScore;
+        if(this.lifeScore == 0){
+            AndroidHandler.JoystickActivity.goToGameOver();
+        }
     }
 
     public synchronized GameState getGameState() {

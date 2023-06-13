@@ -19,8 +19,7 @@ import DTO.AppState;
 import clients.asteroids.AsteroidsController;
 import communications.AndroidHandler;
 import communications.ConnectionController;
-import controllers.SoundController;
-import services.SoundService;
+import controllers.SoundManager;
 
 
 import android.content.Context;
@@ -31,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private VideoView videoBackground;
     private ImageButton soundHandler;
     private Button connectButton;
+    private SoundManager soundManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        soundManager = new SoundManager(this, R.raw.bg_arcade_game);
+
         soundHandler = findViewById(R.id.muteSound);
         AndroidHandler.ConnectActivity = this;
         soundMusicInitializer();
@@ -54,20 +57,31 @@ public class MainActivity extends AppCompatActivity {
                 mp.setVolume(0,0);
             }
         });
-    }
 
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        soundManager.playSound();
+        soundManager.startMusic();
+    }
     private void soundMusicInitializer(){
         if (AppState.getAppState().getIsSoundMusic()){
             soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
+
+
         }else{
             soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
+
+
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
     }
 
     @Override
@@ -84,22 +98,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         videoBackground.suspend();
+        soundManager.pauseSound();
+        soundManager.pauseMusic();
         super.onPause();
     }
 
     @Override
     protected void onDestroy(){
         videoBackground.stopPlayback();
+        soundManager.stopSound();
+        soundManager.stopMusic();
+        soundManager.release();
         super.onDestroy();
     }
 
     public void soundControl(View view) {
         if (AppState.getAppState().getIsSoundMusic()){
-            AppState.getAppState().setIsSoundMusic(false);
             soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
+            AppState.getAppState().setIsSoundMusic(false);
+            soundManager.pauseSound();
+            soundManager.pauseMusic();
         }else{
             AppState.getAppState().setIsSoundMusic(true);
             soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
+            AppState.getAppState().setIsSoundMusic(true);
+            soundManager.startMusic();
         }
 
     }

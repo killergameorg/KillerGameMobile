@@ -18,7 +18,6 @@ import DTO.AppState;
 
 public class LoadingActivity extends AppCompatActivity {
     private VideoView videoBackground;
-    private ImageButton soundHandler;
     private boolean isServiceBound;
     @Override
     protected void onStart() {
@@ -33,13 +32,6 @@ public class LoadingActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_loading);
         videoBackground = findViewById(R.id.backgroundVideoLoadingActivity);
-        soundHandler = findViewById(R.id.muteSoundLoadingActivity);
-
-        if (AppState.getAppState().getIsSoundMusic()){
-            soundHandler.setImageResource(R.drawable.ic_baseline_music_note_24);
-        }else{
-            soundHandler.setImageResource(R.drawable.ic_baseline_music_off_24);
-        }
         //Video config
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.bg_background_connect);
         videoBackground.setVideoURI(uri);

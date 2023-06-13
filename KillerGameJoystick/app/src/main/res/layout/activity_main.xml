@@ -53,6 +53,7 @@
         android:contentDescription="@string/silence"
         android:backgroundTint="@color/primary"
         app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="soundControl"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_music_note_24" />
 
